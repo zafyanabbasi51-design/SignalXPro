@@ -10,13 +10,8 @@
 // 'XXXX-XXXX-XXXX-XXXX': { user: 'Name', plan: 'Gold' }
 // ═══════════════════════════════════════
 const VALID_KEYS = {
-  'SXP1-2024-GOLD-0001':  { user: 'User 1',  plan: 'Gold'     },
-  'SXP2-2024-PREM-0002':  { user: 'User 2',  plan: 'Premium'  },
-  'SXP3-2024-ELITE-003':  { user: 'User 3',  plan: 'Elite'    },
-  'SXP4-2024-VIP0-0004':  { user: 'User 4',  plan: 'VIP'      },
-  'SXP5-2024-PLTM-0005':  { user: 'User 5',  plan: 'Platinum' },
-  // Add more keys below:
-  // 'SXP6-2024-GOLD-0006':  { user: 'User 6',  plan: 'Gold'     },
+  // Apni keys yahan add karein:
+  // 'XXXX-XXXX-XXXX-XXXX': { user: 'User Name', plan: 'Gold' },
 };
 
 // ═══════════════════════════════════════
