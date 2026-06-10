@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SignalXPro — Professional Quotex Trading Signals</title>
+<meta name="description" content="SignalXPro — AI-powered professional trading signals for Quotex platform.">
+<meta name="keywords" content="SignalXPro, Quotex signals, trading signals, binary options, CALL PUT signals, forex signals">
+<meta property="og:title" content="SignalXPro — Pro Trading Signals">
+<meta property="og:description" content="AI-powered Quotex trading signals platform">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%236c3fc7'/><text y='.9em' font-size='72' x='12'>⚡</text></svg>">
+<link rel="stylesheet" href="style.css">  <!-- CSS connect -->
+<script src="backand.js"></script>         <!-- Backend connect -->
+<script src="App.js"></script>             <!-- App logic connect -->
+</head>
+<body>
+
+<!-- ══════════ LICENCE OVERLAY ══════════ -->
+<div id="licence-overlay">
+  <div class="lic-card">
+    <div class="lic-logo">
+      <div class="lic-logo-icon">⚡</div>
+      <div class="lic-logo-text">Signal<span>X</span>Pro</div>
+    </div>
+    <div class="lic-tagline">Professional Quotex Trading Signals</div>
+    <div class="lic-title">🔐 Licence Key Required</div>
+    <div class="lic-sub">Apna unique licence key enter karein<br>Enter your unique licence key to continue</div>
+    <input class="lic-input" id="lic-input" type="text" maxlength="19"
+      placeholder="XXXX-XXXX-XXXX-XXXX"
+      oninput="formatKey(this)"
+      onkeydown="if(event.key==='Enter') checkLicence()">
+    <button class="lic-btn" onclick="checkLicence()">⚡ Activate &amp; Enter Platform</button>
+    <div class="lic-error" id="lic-error"></div>
+    <div class="lic-keys-box">
+      <div class="lic-keys-title">🔑 Demo Keys (for testing)</div>
+      <div class="key-row"><span class="key-val">SXP1-2024-GOLD-0001</span><span class="key-user">User 1</span><span class="key-status ks-active">Active</span></div>
+      <div class="key-row"><span class="key-val">SXP2-2024-PREM-0002</span><span class="key-user">User 2</span><span class="key-status ks-active">Active</span></div>
+      <div class="key-row"><span class="key-val">SXP3-2024-ELITE-003</span><span class="key-user">User 3</span><span class="key-status ks-active">Active</span></div>
+      <div class="key-row"><span class="key-val">SXP4-2024-VIP0-0004</span><span class="key-user">User 4</span><span class="key-status ks-active">Active</span></div>
+      <div class="key-row"><span class="key-val">SXP5-2024-PLTM-0005</span><span class="key-user">User 5</span><span class="key-status ks-active">Active</span></div>
+      <div class="lic-admin-note">⚙️ Nayi keys add karne ke liye <code>backend.js</code> mein VALID_KEYS edit karein.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MAIN APP ══════════ -->
+<div id="main-app" style="display:none">
+
+  <div class="topbar">
+    <a class="logo" href="#">
+      <div class="logo-icon">⚡</div>
+      <div class="logo-name">Signal<span>X</span>Pro <span class="logo-badge">PRO</span></div>
+    </a>
+    <div class="topbar-right">
+      <div class="live-pill"><div class="live-dot"></div> LIVE</div>
+      <div class="acc-pill">Accuracy: <strong id="global-acc">--</strong></div>
+      <div class="user-pill">🔑 <span id="user-label">User</span></div>
+      <div class="clock" id="clock">--:--:--</div>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- LEFT SIDEBAR -->
+    <div class="sidebar">
+      <div class="section-title">Timeframe</div>
+      <div class="tf-grid">
+        <div class="tf-btn" data-tf="5s">5s</div>
+        <div class="tf-btn" data-tf="15s">15s</div>
+        <div class="tf-btn" data-tf="30s">30s</div>
+        <div class="tf-btn active" data-tf="1m">1m</div>
+        <div class="tf-btn" data-tf="2m">2m</div>
+        <div class="tf-btn" data-tf="5m">5m</div>
+        <div class="tf-btn" data-tf="15m">15m</div>
+        <div class="tf-btn" data-tf="30m">30m</div>
+        <div class="tf-btn" data-tf="1h">1h</div>
+        <div class="tf-btn" data-tf="4h">4h</div>
+        <div class="tf-btn" data-tf="1d">1d</div>
+        <div class="tf-btn" data-tf="1w">1w</div>
+      </div>
+      <div class="section-title">Forex Pairs</div>
+      <div id="forex-list"></div>
+      <div class="section-title">Crypto</div>
+      <div id="crypto-list"></div>
+      <div class="section-title">OTC Pairs</div>
+      <div id="otc-list"></div>
+    </div>
+
+    <!-- CENTER -->
+    <div class="center">
+      <div class="chart-wrap">
+        <div class="chart-header">
+          <div>
+            <div class="chart-pair" id="chart-pair">EUR/USD</div>
+            <div class="chart-meta">SignalXPro &bull; <span id="chart-tf">1m</span></div>
+          </div>
+          <div style="text-align:right">
+            <div class="chart-price" id="chart-price">1.08542</div>
+            <div class="chart-spread" id="chart-spread">Spread: 0.2 pips</div>
+          </div>
+        </div>
+        <canvas id="candleChart"></canvas>
+      </div>
+
+      <div id="sig-box" class="sig-box sig-wait">
+        <div class="sig-icon" id="sig-icon">⏳</div>
+        <div class="sig-label" id="sig-label">Waiting for Signal</div>
+        <div class="sig-sub" id="sig-sub">Pair aur timeframe select karein</div>
+        <div class="sig-conf cf-med" id="sig-conf">--</div>
+      </div>
+
+      <button class="gen-btn" id="gen-btn" onclick="generateSignal()">⚡ Generate Signal</button>
+
+      <div class="analyzing" id="analyzing-row">
+        <div class="adot"></div><div class="adot"></div><div class="adot"></div>
+        <span>Market analyze ho raha hai...</span>
+      </div>
+
+      <div style="margin-top:12px">
+        <div class="section-title">Candle Patterns Detected</div>
+        <div id="patterns-area" class="empty-msg">Signal generate karein patterns dekhne ke liye</div>
+      </div>
+
+      <hr class="sep">
+      <div class="section-title">Signal History</div>
+      <div id="history-list"><div class="empty-msg">Koi signal nahi abhi tak</div></div>
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="sidebar-r">
+      <div class="section-title">Technical Indicators</div>
+      <div class="ind-row"><span class="ind-name">RSI (14)</span><span id="rsi-v">--</span></div>
+      <div class="ind-row"><span class="ind-name">MACD</span><span id="macd-v">--</span></div>
+      <div class="ind-row"><span class="ind-name">MA (20)</span><span id="ma-v">--</span></div>
+      <div class="ind-row"><span class="ind-name">EMA (50)</span><span id="ema-v">--</span></div>
+      <div class="ind-row"><span class="ind-name">Stoch RSI</span><span id="stoch-v">--</span></div>
+      <div class="ind-row"><span class="ind-name">Bollinger</span><span id="bb-v">--</span></div>
+      <div class="ind-row"><span class="ind-name">ADX</span><span id="adx-v">--</span></div>
+      <div class="ind-row"><span class="ind-name">Volume</span><span id="vol-v">--</span></div>
+      <div class="ind-row" style="border:none"><span class="ind-name">Overall</span><span id="ovr-v">--</span></div>
+
+      <hr class="sep">
+      <div class="section-title">Session Stats</div>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-lbl">Win Rate</div><div class="stat-val green" id="s-wr">0%</div></div>
+        <div class="stat-card"><div class="stat-lbl">Signals</div><div class="stat-val" id="s-tot">0</div></div>
+        <div class="stat-card"><div class="stat-lbl">Wins</div><div class="stat-val green" id="s-win">0</div></div>
+        <div class="stat-card"><div class="stat-lbl">Losses</div><div class="stat-val red" id="s-los">0</div></div>
+      </div>
+
+      <hr class="sep">
+      <div class="section-title">Entry Countdown</div>
+      <div class="timer-val" id="timer-v">00:00</div>
+      <div class="timer-lbl">Next candle close</div>
+      <div class="cd-bar"><div class="cd-fill" id="cd-fill" style="width:100%"></div></div>
+
+      <hr class="sep">
+      <div class="section-title">Platform Roadmap</div>
+      <div class="roadmap-step"><div class="step-n">1</div><div><div class="step-t">Signal Engine v1</div><div class="step-d">Multi-indicator analysis</div><div class="st-done">✓ Live</div></div></div>
+      <div class="roadmap-step"><div class="step-n">2</div><div><div class="step-t">Licence System</div><div class="step-d">Unique key protection</div><div class="st-done">✓ Live</div></div></div>
+      <div class="roadmap-step"><div class="step-n">3</div><div><div class="step-t">Pattern Recognition</div><div class="step-d">Candlestick patterns</div><div class="st-done">✓ Live</div></div></div>
+      <div class="roadmap-step"><div class="step-n">4</div><div><div class="step-t">Auto-Trade Mode</div><div class="step-d">Quotex integration</div><div class="st-act">● In Progress</div></div></div>
+      <div class="roadmap-step"><div class="step-n">5</div><div><div class="step-t">Mobile App</div><div class="step-d">iOS &amp; Android</div><div class="st-pen">Q3 2026</div></div></div>
+
+      <div class="warn-box">⚠️ Trading mein risk hota hai. Sirf educational purposes ke liye.</div>
+    </div>
+
+  </div>
+</div>
+
+<script src="backend.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
