@@ -7,7 +7,7 @@
 // 🔑 SINGLE MASTER KEY
 // Sirf yeh ek key sab users ke liye
 // ═══════════════════════════════════════
-const MASTER_KEY = 'ZAFYAN-2026-XPRO';
+const MASTER_KEY = 'ZAFY-AN20-26XP-RO';
 
 function validateKey(key) {
   return key.trim().toUpperCase() === MASTER_KEY.toUpperCase()
